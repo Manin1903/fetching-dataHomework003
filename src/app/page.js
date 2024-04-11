@@ -1,26 +1,25 @@
-import CardComponent from "@/components/CardComponent";
+
 import MovieComponent from "@/components/MovieComponent";
 import { getAllMovieService } from "@/service/movie.service";
 import Image from "next/image";
 
 export default async function Home() {
-  async function getGen (){
-    let array = []
+ 
+  const genres = await getGen();
+
+  async function getGen() {
     const originalArray = await getAllMovieService();
-
-  originalArray.payload.map((gen) => {
-    if (!array.includes(gen.genre)) {
-      array.push(gen.genre)
-    }
-
-  });
-    console.log(array);
+    const array = originalArray.payload.reduce((acc, gen) => {
+      if (!acc.includes(gen.genre)) {
+        acc.push(gen.genre);
+      }
+      return acc;
+    }, []);
+    return array;
   }
 
-  
   return (
     <>
-      
       <div>
         <div className="absolute inset-0 z-[-1]">
           <img
@@ -33,11 +32,21 @@ export default async function Home() {
       </div>
       
       <div className="bg-gray-900">
-        <div className="text-3xl font-bold text-white px-16 py-10">
-        
-            <h1>movie<span> &gt; </span></h1>
+        <div className="text-2xl font-bold text-white px-16 py-10">
+            <h1> All movie<span> &gt; </span></h1>
         </div>
         <MovieComponent/>
+
+        {genres.map((genre) => (
+          <div key={genre}>
+            <div className="text-3xl font-bold text-white px-16 py-10">
+              <h1>
+                {genre} movie<span> &gt; </span>
+              </h1>
+            </div>
+            <MovieComponent genre={genre} />
+          </div>
+        ))}
       </div>
       
     </>

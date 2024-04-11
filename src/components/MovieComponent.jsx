@@ -21,7 +21,7 @@ const MovieComponent = async () => {
       <CarouselContent>
       {movie.payload.map((item) => (
           <CarouselItem className="basis-1/4">
-            <div className="p-5">
+            <div className="p-4">
               <Card>
                 <CardContent className="flex aspect-square items-center justify-center">
                     <Link
